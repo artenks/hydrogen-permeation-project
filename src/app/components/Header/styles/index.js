@@ -28,7 +28,7 @@ export const Logo = styled.div`
   height: 100%;
   align-items: center;
 
-  @media (max-width: 520px) {
+  @media (max-width: 630px) {
     strong {
       display: none;
     }

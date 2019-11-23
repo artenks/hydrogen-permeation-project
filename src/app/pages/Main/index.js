@@ -8,6 +8,7 @@ import {
   Information,
   Paragraph,
   ParagraphContainer,
+  Image,
 } from './styles';
 
 import Header from '~/app/components/Header';
@@ -57,7 +58,7 @@ export default function Main() {
         <Paragraph>
           O Projeto Permeação por Hidrogênio tem por objetivo auxiliar
           pesquisadores ou empresas que desejem obter informações sobre os
-          parâtros de difusão de uma determinada especificação de aço.
+          parâmetros de difusão de uma determinada especificação de aço.
         </Paragraph>
         <Paragraph>
           Dessa forma, é apresentada no site uma breve revisão bibliográfica
@@ -95,7 +96,7 @@ export default function Main() {
         </Paragraph>
 
         <center>
-          <img src={galvanostatic} alt="Formula" />
+          <Image src={galvanostatic} alt="Formula" />
         </center>
 
         <Paragraph>
@@ -103,7 +104,7 @@ export default function Main() {
         </Paragraph>
 
         <center>
-          <img src={potenciostatic} alt="Formula" />
+          <Image src={potenciostatic} alt="Formula" />
         </center>
 
         <Paragraph>
@@ -113,7 +114,7 @@ export default function Main() {
         </Paragraph>
 
         <center>
-          <img src={doubleopenedcircuit} alt="Formula" />
+          <Image src={doubleopenedcircuit} alt="Formula" />
         </center>
       </ParagraphContainer>
     </Container>

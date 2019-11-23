@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
   width: 100%;
   max-width: 960px;
-  padding: 20px 50px 50px;
+  padding: 20px 30px 50px;
   margin: 0 auto;
   padding-top: 80px;
 
@@ -31,6 +31,12 @@ export const InformationList = styled.ul`
   flex-wrap: wrap;
   justify-content: center;
   margin: 50px 0 30px;
+
+  @media (max-width: 700px) {
+    li + li {
+      margin-top: 30px;
+    }
+  }
 `;
 
 export const Information = styled.li`
@@ -76,4 +82,10 @@ export const Paragraph = styled.p`
   text-align: center;
   color: #666;
   line-height: 20px;
+`;
+
+export const Image = styled.img`
+  max-width: 450px;
+  width: 100%;
+  margin: 0 auto;
 `;

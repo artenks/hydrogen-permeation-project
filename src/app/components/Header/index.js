@@ -1,6 +1,6 @@
 import React from 'react';
 import { DiAtom } from 'react-icons/di';
-import { FaBook, FaRegFilePdf } from 'react-icons/fa';
+import { FaBook, FaRegFilePdf, FaCalculator } from 'react-icons/fa';
 
 import { Wrapper, Container, Logo, InfoActions, InfoAction } from './styles';
 
@@ -15,13 +15,17 @@ export default function Header() {
 
         <InfoActions>
           <InfoActions>
-            <InfoAction>
+            {/* <InfoAction>
               <FaBook color="#999" size={16} />
               <span>Inicio</span>
-            </InfoAction>
+            </InfoAction> */}
             <InfoAction>
               <FaRegFilePdf color="#999" size={16} />
               <span>Artigos</span>
+            </InfoAction>
+            <InfoAction>
+              <FaCalculator color="#999" size={16} />
+              <span>Cálculos</span>
             </InfoAction>
           </InfoActions>
         </InfoActions>
