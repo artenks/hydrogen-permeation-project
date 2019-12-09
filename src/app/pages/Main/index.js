@@ -19,7 +19,7 @@ import doubleopenedcircuit from '~/assets/doubleopenedcircuit.png';
 export default function Main() {
   return (
     <Container>
-      <Header />
+      <Header activeTab="home" />
 
       <Title>Aprofunde seu conhecimento.</Title>
       <Caption>

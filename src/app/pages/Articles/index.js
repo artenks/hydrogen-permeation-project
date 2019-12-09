@@ -1,7 +1,13 @@
 import React from 'react';
 
-// import { Container } from './styles';
+import Header from '~/app/components/Header';
+
+import { Container } from './styles';
 
 export default function Articles() {
-  return <div />;
+  return (
+    <Container>
+      <Header activeTab="articles" />
+    </Container>
+  );
 }
