@@ -39,8 +39,6 @@ import tf17 from '~/assets/theorical_fundation/17.png';
 export default function Main() {
   return (
     <Container>
-      {/* <Header /> */}
-
       <Title>Aprofunde seu conhecimento.</Title>
       <Caption>
         ENCONTRE ARTIGOS QUE AJUDEM A SUA PESQUISA SOBRE PERMEAÇÃO POR

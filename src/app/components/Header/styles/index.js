@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-
 import { Link } from 'react-router-dom';
 
 export const Wrapper = styled.div`
@@ -23,12 +22,13 @@ export const Container = styled.div`
   height: 48px;
 `;
 
-export const Logo = styled.div`
+export const Logo = styled(Link)`
   cursor: pointer;
   padding: 0 20px;
   display: flex;
   height: 100%;
   align-items: center;
+  background: rgba(255, 255, 255, ${props => (props.isActive ? 0.05 : 0.0)});
 
   @media (max-width: 630px) {
     strong {
@@ -70,6 +70,7 @@ export const InfoAction = styled(Link)`
   height: 48px;
   padding: 0 10px;
   align-items: center;
+  background: rgba(255, 255, 255, ${props => (props.isActive ? 0.05 : 0.0)});
 
   svg {
     margin-right: 8px;

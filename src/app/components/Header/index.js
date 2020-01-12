@@ -8,7 +8,7 @@ export default function Header() {
   return (
     <Wrapper>
       <Container>
-        <Logo>
+        <Logo to="/">
           <DiAtom color="#FFF" size={32} />
           <strong>Projeto Permeação por Hidrogênio</strong>
         </Logo>
