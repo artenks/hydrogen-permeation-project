@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { Link } from 'react-router-dom';
+
 export const Wrapper = styled.div`
   position: fixed;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -62,7 +64,7 @@ export const InfoActions = styled.div`
   align-items: center;
 `;
 
-export const InfoAction = styled.div`
+export const InfoAction = styled(Link)`
   cursor: pointer;
   display: flex;
   height: 48px;

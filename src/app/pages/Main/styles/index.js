@@ -20,6 +20,15 @@ export const Title = styled.strong`
   font-weight: 500;
 `;
 
+export const Subtitle = styled.p`
+  margin: 30px 0;
+  color: #555;
+  font-size: 20px;
+  font-weight: 500;
+
+  margin-top: 0;
+`;
+
 export const Caption = styled.span`
   font-size: 16px;
   color: #666;
@@ -84,8 +93,16 @@ export const Paragraph = styled.p`
   line-height: 20px;
 `;
 
+export const Observation = styled.p`
+  font-size: 14px;
+  text-align: center;
+  color: #777;
+  line-height: 20px;
+`;
+
 export const Image = styled.img`
-  max-width: 450px;
+  max-width: ${props => (props.size ? `${props.size}px` : '450px')};
+  margin: ${props => (props.margin ? `${props.margin}px` : '0')} 0 !important;
   width: 100%;
   margin: 0 auto;
 `;

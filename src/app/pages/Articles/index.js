@@ -3,5 +3,5 @@ import React from 'react';
 // import { Container } from './styles';
 
 export default function Articles() {
-  return <div />;
+  return <h1>Artigos</h1>;
 }
