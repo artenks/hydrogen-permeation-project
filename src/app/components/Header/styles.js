@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export const Wrapper = styled.div`
   position: fixed;
@@ -9,6 +9,8 @@ export const Wrapper = styled.div`
   right: 0;
   width: 100%;
   background: #333;
+
+  z-index: 1;
 `;
 
 export const Container = styled.div`
@@ -22,7 +24,7 @@ export const Container = styled.div`
   height: 48px;
 `;
 
-export const Logo = styled(Link)`
+export const Logo = styled(NavLink)`
   cursor: pointer;
   padding: 0 20px;
   display: flex;
@@ -64,7 +66,11 @@ export const InfoActions = styled.div`
   align-items: center;
 `;
 
-export const InfoAction = styled(Link)`
+export const InfoAction = styled(NavLink).attrs({
+  activeClassName: 'selected',
+})`
+  position: relative;
+
   cursor: pointer;
   display: flex;
   height: 48px;
@@ -90,6 +96,27 @@ export const InfoAction = styled(Link)`
 
     svg {
       fill: #fff;
+    }
+  }
+
+  &.selected {
+    span {
+      color: #fff;
+    }
+
+    svg {
+      fill: #fff;
+    }
+
+    &::after {
+      content: '';
+      background: #fff;
+      height: 2px;
+
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
   }
 `;
