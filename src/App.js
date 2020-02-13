@@ -13,6 +13,7 @@ export default function App() {
       <Scrollbar>
         <Routes />
       </Scrollbar>
+
       <GlobalStyle />
       <ToastContainer autoClose={3000} />
     </BrowserRouter>

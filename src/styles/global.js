@@ -2,7 +2,7 @@ import { createGlobalStyle } from 'styled-components';
 import 'react-perfect-scrollbar/dist/css/styles.css';
 
 export default createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap');
+  @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
   * {
     margin: 0;
     padding: 0;
@@ -15,10 +15,13 @@ export default createGlobalStyle`
   html, body, #root {
     height: 100%;
   }
+  #root {
+    display: flex;
+    flex-direction: column;
+  }
   body {
     -webkit-font-smoothing: antialiased;
-  }
-  body, input, button {
+
     font: 14px 'Roboto', sans-serif;
   }
   a {

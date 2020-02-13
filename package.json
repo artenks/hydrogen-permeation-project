@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.9.2",
     "@rocketseat/unform": "^1.6.1",
     "chart.js": "^2.9.3",
     "eslint-import-resolver-babel-plugin-root-import": "^1.1.1",
@@ -10,12 +11,14 @@
     "react-chartjs-2": "^2.8.0",
     "react-dom": "^16.12.0",
     "react-icons": "^3.8.0",
+    "react-modal": "^3.11.1",
     "react-perfect-scrollbar": "^1.5.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-toastify": "^5.4.1",
     "styled-components": "^4.4.1",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.2",
+    "yup": "^0.28.1"
   },
   "scripts": {
     "start": "react-app-rewired start",
