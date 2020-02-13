@@ -13,7 +13,6 @@ import {
   Image,
 } from './styles';
 
-// import Header from '~/app/components/Header';
 import galvanostatic from '~/assets/galvanostatic.png';
 import potenciostatic from '~/assets/potenciostatic.png';
 import doubleopenedcircuit from '~/assets/doubleopenedcircuit.png';

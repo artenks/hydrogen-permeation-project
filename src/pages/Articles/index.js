@@ -1,6 +1,33 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Container, Filters, Title, Form, Input } from './styles';
+import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import grey from '@material-ui/core/colors/grey';
+import {
+  Container,
+  Subtitle,
+  Filters,
+  Filled,
+  Title,
+  Caption,
+  MethodTitle,
+  MethodsList,
+  Form,
+} from './styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: grey,
+    secondary: grey,
+  },
+});
 
 export default function Articles() {
   const infos = [65, 59, 80, 81, 56, 55, 40];
@@ -19,8 +46,27 @@ export default function Articles() {
     ],
   };
 
+  const [isTB, setIsTB] = useState(true);
+  const [isTL, setIsTL] = useState(false);
+  const [isTI, setIsTI] = useState(false);
+
+  const handleTBChange = useCallback(e => {
+    setIsTB(e.target.checked);
+  }, []);
+
+  const handleTLChange = useCallback(e => {
+    setIsTL(e.target.checked);
+  }, []);
+
+  const handleTIChange = useCallback(e => {
+    setIsTI(e.target.checked);
+  }, []);
+
   return (
     <Container>
+      <Title>Artigos</Title>
+      <Caption>COLEÇÃO DE ARTIGOS PARA VOCÊ SE BASEAR NOS SEUS ESTUDOS</Caption>
+
       <Bar
         data={data}
         options={{
@@ -96,18 +142,89 @@ export default function Articles() {
       />
 
       <Filters>
-        <Title>Filtros</Title>
+        <ThemeProvider theme={theme}>
+          <Subtitle>Filtros</Subtitle>
+          <Form>
+            <FormControl variant="filled">
+              <InputLabel id="demo-simple-select-filled-label">
+                Condição de Carregamento
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-filled-label"
+                id="demo-simple-select-filled"
+                // value={chargeCondition}
+                // onChange={handleChange}
+              >
+                <MenuItem value={0}>Todos</MenuItem>
+                <MenuItem value={1}>Potenciostático</MenuItem>
+                <MenuItem value={2}>Galvanostático</MenuItem>
+                <MenuItem value={3}>Potencial de Circuito Aberto</MenuItem>
+              </Select>
+            </FormControl>
 
-        <Form>
-          <Input name="steel" placeholder="Aço" />
-          <Input
-            name="charging_condition"
-            placeholder="Condição de Carregamento"
-          />
-          <Input name="method" placeholder="Método" />
-          <Input name="coating" placeholder="Revestimento" />
-          <Input name="difusivity" placeholder="Difusividade" />
-        </Form>
+            <FormControl variant="filled">
+              <InputLabel id="acos-label">Aços</InputLabel>
+              <Select
+                labelId="acos-label"
+                id="acos  "
+                // value={chargeCondition}
+                // onChange={handleChange}
+              >
+                <MenuItem value={0}>Todos</MenuItem>
+              </Select>
+            </FormControl>
+
+            <Filled>
+              <MethodTitle>Métodos</MethodTitle>
+              <MethodsList>
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={isTB} onChange={handleTBChange} />
+                  }
+                  label="TB"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={isTL} onChange={handleTLChange} />
+                  }
+                  label="TL"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={isTI} onChange={handleTIChange} />
+                  }
+                  label="TI"
+                />
+              </MethodsList>
+            </Filled>
+
+            <FormControl variant="filled">
+              <InputLabel id="revestimento-label">Revestimento</InputLabel>
+              <Select
+                labelId="revestimento-label"
+                id="revestimento  "
+                // value={chargeCondition}
+                // onChange={handleChange}
+              >
+                <MenuItem value={0}>Todos</MenuItem>
+                <MenuItem value={1}>Paládio</MenuItem>
+                <MenuItem value={2}>Níquel</MenuItem>
+                <MenuItem value={3}>Sem Revestimento</MenuItem>
+              </Select>
+            </FormControl>
+
+            <TextField label="Difusividade" variant="filled" />
+
+            <Button
+              style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
+              variant="contained"
+              color="primary"
+              // onClick={handleCalc}
+            >
+              Aplicar Filtros
+            </Button>
+          </Form>
+        </ThemeProvider>
       </Filters>
     </Container>
   );

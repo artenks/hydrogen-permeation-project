@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 
+import { toast } from 'react-toastify';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
@@ -24,6 +25,8 @@ import {
   Separator,
 } from './styles';
 
+import { gpTb, gpTl, gpTi, ppTb, ppTl, ppTi } from './calcs';
+
 const theme = createMuiTheme({
   palette: {
     primary: grey,
@@ -32,39 +35,100 @@ const theme = createMuiTheme({
 });
 
 export default function Calculator() {
-  const [isOpenned, setOpenned] = useState(true);
+  const [isOpenned, setOpenned] = useState(false);
 
-  const [isTB, setTB] = useState(true);
-  const [isTL, setTL] = useState(false);
-  const [isTI, setTI] = useState(false);
+  const [isTB, setIsTB] = useState(true);
+  const [isTL, setIsTL] = useState(false);
+  const [isTI, setIsTI] = useState(false);
   const [chargeCondition, setChargeCondition] = useState(0);
+
+  const [tb, setTB] = useState(0);
+  const [tl, setTL] = useState(0);
+  const [ti, setTI] = useState(0);
+  const [width, setWidth] = useState(0);
 
   const handleChange = event => {
     setChargeCondition(event.target.value);
   };
 
   const handleTBChange = useCallback(e => {
-    setTB(e.target.checked);
+    setIsTB(e.target.checked);
   }, []);
 
   const handleTLChange = useCallback(e => {
-    setTL(e.target.checked);
+    setIsTL(e.target.checked);
   }, []);
 
   const handleTIChange = useCallback(e => {
-    setTI(e.target.checked);
+    setIsTI(e.target.checked);
   }, []);
 
+  const resultTB = useMemo(() => {
+    if (!isTB) return 0.0;
+
+    if (chargeCondition === 1) {
+      return gpTb(tb, width);
+    }
+
+    return ppTb(tb, width);
+  }, [chargeCondition, isTB, tb, width]);
+
+  const resultTL = useMemo(() => {
+    if (!isTL) return 0.0;
+
+    if (chargeCondition === 1) {
+      return gpTl(tl, width);
+    }
+
+    return ppTl(tl, width);
+  }, [chargeCondition, isTL, tl, width]);
+
+  const resultTI = useMemo(() => {
+    if (!isTI) return 0.0;
+
+    if (chargeCondition === 1) {
+      return gpTi(ti, width);
+    }
+
+    return ppTi(ti, width);
+  }, [chargeCondition, isTI, ti, width]);
+
+  const average = useMemo(() => {
+    const allResults = [resultTB, resultTL, resultTI];
+    const amount = allResults.reduce((total, value) => total + value);
+    const nonZero = allResults.filter(value => value !== 0).length;
+
+    return amount / nonZero;
+  }, [resultTB, resultTI, resultTL]);
+
   const handleCalc = useCallback(() => {
-    console.log({
-      isTB,
-      isTL,
-      isTI,
-      age: chargeCondition,
-    });
+    if (!isTB && !isTL && !isTI) {
+      toast.error('Selecione ao menos um método');
+      return;
+    }
+
+    if (width === 0) {
+      toast.error('Valor para Espessura não informado');
+      return;
+    }
+
+    if (isTB && tb === 0) {
+      toast.error('Valor para TB não informado');
+      return;
+    }
+
+    if (isTL && tl === 0) {
+      toast.error('Valor para TL não informado');
+      return;
+    }
+
+    if (isTI && ti === 0) {
+      toast.error('Valor para TI não informado');
+      return;
+    }
 
     setOpenned(true);
-  }, [chargeCondition, isTB, isTI, isTL]);
+  }, [isTB, isTI, isTL, tb, ti, tl, width]);
 
   return (
     <>
@@ -117,13 +181,39 @@ export default function Calculator() {
               </MethodsList>
             </Filled>
 
-            <TextField label="Espessura (m)" variant="filled" />
+            <TextField
+              value={width || ''}
+              onChange={e => setWidth(e.target.value)}
+              label="Espessura (m)"
+              variant="filled"
+            />
 
-            {isTB && <TextField label="Tempo - TB (s)" variant="filled" />}
+            {isTB && (
+              <TextField
+                value={tb || ''}
+                onChange={e => setTB(e.target.value)}
+                label="Tempo - TB (s)"
+                variant="filled"
+              />
+            )}
 
-            {isTL && <TextField label="Tempo - TL (s)" variant="filled" />}
+            {isTL && (
+              <TextField
+                value={tl || ''}
+                onChange={e => setTL(e.target.value)}
+                label="Tempo - TL (s)"
+                variant="filled"
+              />
+            )}
 
-            {isTI && <TextField label="Tempo - TI (s)" variant="filled" />}
+            {isTI && (
+              <TextField
+                value={ti || ''}
+                onChange={e => setTI(e.target.value)}
+                label="Tempo - TI (s)"
+                variant="filled"
+              />
+            )}
 
             <Button
               style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
@@ -147,7 +237,7 @@ export default function Calculator() {
                 disabled
                 id="filled-disabled"
                 label="TB"
-                defaultValue="Hello World"
+                defaultValue={resultTB}
                 variant="filled"
               />
             )}
@@ -157,7 +247,7 @@ export default function Calculator() {
                 disabled
                 id="filled-disabled"
                 label="TL"
-                defaultValue="Hello World"
+                defaultValue={resultTL}
                 variant="filled"
               />
             )}
@@ -167,7 +257,7 @@ export default function Calculator() {
                 disabled
                 id="filled-disabled"
                 label="TI"
-                defaultValue="Hello World"
+                defaultValue={resultTI}
                 variant="filled"
               />
             )}
@@ -179,7 +269,7 @@ export default function Calculator() {
               disabled
               id="filled-disabled"
               label="Média"
-              defaultValue="Hello World"
+              defaultValue={average}
               variant="filled"
             />
 
