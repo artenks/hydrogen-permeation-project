@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 
+import Scrollbar from 'react-perfect-scrollbar';
 import { toast } from 'react-toastify';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -132,100 +133,102 @@ export default function Calculator() {
 
   return (
     <>
-      <Container>
-        <Title>Calculadora</Title>
-        <Caption>
-          FAÇA USO DAS NOSSAS FORMULAS, PREENCHA O FORMULÁRIO E OBTENHA O
-          RESULTADO
-        </Caption>
+      <Scrollbar>
+        <Container>
+          <Title>Calculadora</Title>
+          <Caption>
+            FAÇA USO DAS NOSSAS FORMULAS, PREENCHA O FORMULÁRIO E OBTENHA O
+            RESULTADO
+          </Caption>
 
-        <ThemeProvider theme={theme}>
-          <Form>
-            <FormControl variant="filled">
-              <InputLabel id="demo-simple-select-filled-label">
-                Condição de Carregamento
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-filled-label"
-                id="demo-simple-select-filled"
-                value={chargeCondition}
-                onChange={handleChange}
+          <ThemeProvider theme={theme}>
+            <Form>
+              <FormControl variant="filled">
+                <InputLabel id="demo-simple-select-filled-label">
+                  Condição de Carregamento
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-filled-label"
+                  id="demo-simple-select-filled"
+                  value={chargeCondition}
+                  onChange={handleChange}
+                >
+                  <MenuItem value={0}>Potenciostático</MenuItem>
+                  <MenuItem value={1}>Galvanostático</MenuItem>
+                  <MenuItem value={2}>Potencial de Circuito Aberto</MenuItem>
+                </Select>
+              </FormControl>
+
+              <Filled>
+                <Subtitle>Métodos</Subtitle>
+                <MethodsList>
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={isTB} onChange={handleTBChange} />
+                    }
+                    label="TB"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={isTL} onChange={handleTLChange} />
+                    }
+                    label="TL"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={isTI} onChange={handleTIChange} />
+                    }
+                    label="TI"
+                  />
+                </MethodsList>
+              </Filled>
+
+              <TextField
+                value={width || ''}
+                onChange={e => setWidth(e.target.value)}
+                label="Espessura (m)"
+                variant="filled"
+              />
+
+              {isTB && (
+                <TextField
+                  value={tb || ''}
+                  onChange={e => setTB(e.target.value)}
+                  label="Tempo - TB (s)"
+                  variant="filled"
+                />
+              )}
+
+              {isTL && (
+                <TextField
+                  value={tl || ''}
+                  onChange={e => setTL(e.target.value)}
+                  label="Tempo - TL (s)"
+                  variant="filled"
+                />
+              )}
+
+              {isTI && (
+                <TextField
+                  value={ti || ''}
+                  onChange={e => setTI(e.target.value)}
+                  label="Tempo - TI (s)"
+                  variant="filled"
+                />
+              )}
+
+              <Button
+                style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
+                variant="contained"
+                color="primary"
+                onClick={handleCalc}
               >
-                <MenuItem value={0}>Potenciostático</MenuItem>
-                <MenuItem value={1}>Galvanostático</MenuItem>
-                <MenuItem value={2}>Potencial de Circuito Aberto</MenuItem>
-              </Select>
-            </FormControl>
-
-            <Filled>
-              <Subtitle>Métodos</Subtitle>
-              <MethodsList>
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={isTB} onChange={handleTBChange} />
-                  }
-                  label="TB"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={isTL} onChange={handleTLChange} />
-                  }
-                  label="TL"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox checked={isTI} onChange={handleTIChange} />
-                  }
-                  label="TI"
-                />
-              </MethodsList>
-            </Filled>
-
-            <TextField
-              value={width || ''}
-              onChange={e => setWidth(e.target.value)}
-              label="Espessura (m)"
-              variant="filled"
-            />
-
-            {isTB && (
-              <TextField
-                value={tb || ''}
-                onChange={e => setTB(e.target.value)}
-                label="Tempo - TB (s)"
-                variant="filled"
-              />
-            )}
-
-            {isTL && (
-              <TextField
-                value={tl || ''}
-                onChange={e => setTL(e.target.value)}
-                label="Tempo - TL (s)"
-                variant="filled"
-              />
-            )}
-
-            {isTI && (
-              <TextField
-                value={ti || ''}
-                onChange={e => setTI(e.target.value)}
-                label="Tempo - TI (s)"
-                variant="filled"
-              />
-            )}
-
-            <Button
-              style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
-              variant="contained"
-              color="primary"
-              onClick={handleCalc}
-            >
-              Calcular
-            </Button>
-          </Form>
-        </ThemeProvider>
-      </Container>
+                Calcular
+              </Button>
+            </Form>
+          </ThemeProvider>
+        </Container>
+      </Scrollbar>
 
       <Modal isOpen={isOpenned} onRequestClose={() => setOpenned(false)}>
         <ModalContainer>
