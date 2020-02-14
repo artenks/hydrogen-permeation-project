@@ -53,7 +53,7 @@ export const Filled = styled.div`
 
 export const Subtitle = styled.p`
   color: #777;
-  font-size: 13px;
+  font-size: 12px;
 `;
 
 export const MethodsList = styled.div`

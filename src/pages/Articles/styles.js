@@ -15,13 +15,18 @@ export const Container = styled.div`
 
 export const MethodTitle = styled.p`
   color: #777;
-  font-size: 13px;
+  font-size: 12px;
 `;
 
 export const Filters = styled.div`
   width: 100%;
   max-width: 600px;
-  padding: 50px 30px 0;
+  align-self: center;
+
+  margin-top: 32px;
+
+  display: flex;
+  flex-direction: column;
 `;
 
 export const Title = styled.strong`
