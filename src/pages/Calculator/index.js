@@ -137,8 +137,8 @@ export default function Calculator() {
         <Container>
           <Title>Calculadora</Title>
           <Caption>
-            FAÇA USO DAS NOSSAS FORMULAS, PREENCHA O FORMULÁRIO E OBTENHA O
-            RESULTADO
+            FAÇA USO DAS NOSSAS FÓRMULAS, PREENCHA O FORMULÁRIO E OBTENHA O(S)
+            RESULTADO(S)
           </Caption>
 
           <ThemeProvider theme={theme}>
@@ -188,6 +188,7 @@ export default function Calculator() {
                 onChange={e => setWidth(e.target.value)}
                 label="Espessura (m)"
                 variant="filled"
+                type="number"
               />
 
               {isTB && (
@@ -196,6 +197,7 @@ export default function Calculator() {
                   onChange={e => setTB(e.target.value)}
                   label="Tempo - TB (s)"
                   variant="filled"
+                  type="number"
                 />
               )}
 
@@ -205,6 +207,7 @@ export default function Calculator() {
                   onChange={e => setTL(e.target.value)}
                   label="Tempo - TL (s)"
                   variant="filled"
+                  type="number"
                 />
               )}
 
@@ -214,6 +217,7 @@ export default function Calculator() {
                   onChange={e => setTI(e.target.value)}
                   label="Tempo - TI (s)"
                   variant="filled"
+                  type="number"
                 />
               )}
 

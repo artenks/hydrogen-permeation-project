@@ -2,10 +2,13 @@ import React, { useState, useCallback } from 'react';
 import { Bar } from 'react-chartjs-2';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
+import FilledInput from '@material-ui/core/FilledInput';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -47,6 +50,8 @@ export default function Articles() {
       },
     ],
   };
+
+  const [isLoadingSteels, setLoadingSteels] = useState(true);
 
   const [isTB, setIsTB] = useState(true);
   const [isTL, setIsTL] = useState(false);
@@ -142,7 +147,17 @@ export default function Articles() {
               // }
               // $('.ui.modal').modal('show');
             },
-            scales: { yAxes: [{ ticks: { beginAtZero: true } }] },
+            scales: {
+              yAxes: [
+                {
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Difusividade (10-10m²s-1)',
+                  },
+                  ticks: { beginAtZero: true },
+                },
+              ],
+            },
           }}
         />
 
@@ -150,6 +165,32 @@ export default function Articles() {
           <ThemeProvider theme={theme}>
             <Subtitle>Filtros</Subtitle>
             <Form>
+              {isLoadingSteels ? (
+                <FilledInput
+                  disabled
+                  startAdornment={
+                    <InputAdornment position="start">Aços</InputAdornment>
+                  }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <CircularProgress size={24} />
+                    </InputAdornment>
+                  }
+                />
+              ) : (
+                <FormControl variant="filled">
+                  <InputLabel id="acos-label">Aços</InputLabel>
+                  <Select
+                    labelId="acos-label"
+                    id="acos  "
+                    // value={chargeCondition}
+                    // onChange={handleChange}
+                  >
+                    <MenuItem value={0}>Todos</MenuItem>
+                  </Select>
+                </FormControl>
+              )}
+
               <FormControl variant="filled">
                 <InputLabel id="demo-simple-select-filled-label">
                   Condição de Carregamento
@@ -164,18 +205,6 @@ export default function Articles() {
                   <MenuItem value={1}>Potenciostático</MenuItem>
                   <MenuItem value={2}>Galvanostático</MenuItem>
                   <MenuItem value={3}>Potencial de Circuito Aberto</MenuItem>
-                </Select>
-              </FormControl>
-
-              <FormControl variant="filled">
-                <InputLabel id="acos-label">Aços</InputLabel>
-                <Select
-                  labelId="acos-label"
-                  id="acos  "
-                  // value={chargeCondition}
-                  // onChange={handleChange}
-                >
-                  <MenuItem value={0}>Todos</MenuItem>
                 </Select>
               </FormControl>
 
@@ -218,7 +247,7 @@ export default function Articles() {
                 </Select>
               </FormControl>
 
-              <TextField label="Difusividade" variant="filled" />
+              <TextField label="Difusividade" variant="filled" type="number" />
 
               <Button
                 style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
