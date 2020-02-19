@@ -2,7 +2,6 @@ import React, { useState, useCallback, useMemo } from 'react';
 
 import Scrollbar from 'react-perfect-scrollbar';
 import { toast } from 'react-toastify';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -11,7 +10,6 @@ import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Select from '@material-ui/core/Select';
-import grey from '@material-ui/core/colors/grey';
 import Modal from '../../components/Modal';
 import {
   Container,
@@ -27,13 +25,6 @@ import {
 } from './styles';
 
 import { gpTb, gpTl, gpTi, ppTb, ppTl, ppTi } from './calcs';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: grey,
-    secondary: grey,
-  },
-});
 
 export default function Calculator() {
   const [isOpenned, setOpenned] = useState(false);
@@ -141,154 +132,150 @@ export default function Calculator() {
             RESULTADO(S)
           </Caption>
 
-          <ThemeProvider theme={theme}>
-            <Form>
-              <FormControl variant="filled">
-                <InputLabel id="demo-simple-select-filled-label">
-                  Condição de Carregamento
-                </InputLabel>
-                <Select
-                  labelId="demo-simple-select-filled-label"
-                  id="demo-simple-select-filled"
-                  value={chargeCondition}
-                  onChange={handleChange}
-                >
-                  <MenuItem value={0}>Potenciostático</MenuItem>
-                  <MenuItem value={1}>Galvanostático</MenuItem>
-                  <MenuItem value={2}>Potencial de Circuito Aberto</MenuItem>
-                </Select>
-              </FormControl>
+          <Form>
+            <FormControl variant="filled">
+              <InputLabel id="demo-simple-select-filled-label">
+                Condição de Carregamento
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-filled-label"
+                id="demo-simple-select-filled"
+                value={chargeCondition}
+                onChange={handleChange}
+              >
+                <MenuItem value={0}>Potenciostático</MenuItem>
+                <MenuItem value={1}>Galvanostático</MenuItem>
+                <MenuItem value={2}>Potencial de Circuito Aberto</MenuItem>
+              </Select>
+            </FormControl>
 
-              <Filled>
-                <Subtitle>Métodos</Subtitle>
-                <MethodsList>
-                  <FormControlLabel
-                    control={
-                      <Checkbox checked={isTB} onChange={handleTBChange} />
-                    }
-                    label="TB"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox checked={isTL} onChange={handleTLChange} />
-                    }
-                    label="TL"
-                  />
-                  <FormControlLabel
-                    control={
-                      <Checkbox checked={isTI} onChange={handleTIChange} />
-                    }
-                    label="TI"
-                  />
-                </MethodsList>
-              </Filled>
+            <Filled>
+              <Subtitle>Métodos</Subtitle>
+              <MethodsList>
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={isTB} onChange={handleTBChange} />
+                  }
+                  label="TB"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={isTL} onChange={handleTLChange} />
+                  }
+                  label="TL"
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox checked={isTI} onChange={handleTIChange} />
+                  }
+                  label="TI"
+                />
+              </MethodsList>
+            </Filled>
 
+            <TextField
+              value={width || ''}
+              onChange={e => setWidth(e.target.value)}
+              label="Espessura (m)"
+              variant="filled"
+              type="number"
+            />
+
+            {isTB && (
               <TextField
-                value={width || ''}
-                onChange={e => setWidth(e.target.value)}
-                label="Espessura (m)"
+                value={tb || ''}
+                onChange={e => setTB(e.target.value)}
+                label="Tempo - TB (s)"
                 variant="filled"
                 type="number"
               />
+            )}
 
-              {isTB && (
-                <TextField
-                  value={tb || ''}
-                  onChange={e => setTB(e.target.value)}
-                  label="Tempo - TB (s)"
-                  variant="filled"
-                  type="number"
-                />
-              )}
+            {isTL && (
+              <TextField
+                value={tl || ''}
+                onChange={e => setTL(e.target.value)}
+                label="Tempo - TL (s)"
+                variant="filled"
+                type="number"
+              />
+            )}
 
-              {isTL && (
-                <TextField
-                  value={tl || ''}
-                  onChange={e => setTL(e.target.value)}
-                  label="Tempo - TL (s)"
-                  variant="filled"
-                  type="number"
-                />
-              )}
+            {isTI && (
+              <TextField
+                value={ti || ''}
+                onChange={e => setTI(e.target.value)}
+                label="Tempo - TI (s)"
+                variant="filled"
+                type="number"
+              />
+            )}
 
-              {isTI && (
-                <TextField
-                  value={ti || ''}
-                  onChange={e => setTI(e.target.value)}
-                  label="Tempo - TI (s)"
-                  variant="filled"
-                  type="number"
-                />
-              )}
-
-              <Button
-                style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
-                variant="contained"
-                color="primary"
-                onClick={handleCalc}
-              >
-                Calcular
-              </Button>
-            </Form>
-          </ThemeProvider>
+            <Button
+              style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
+              variant="contained"
+              color="primary"
+              onClick={handleCalc}
+            >
+              Calcular
+            </Button>
+          </Form>
         </Container>
       </Scrollbar>
 
       <Modal isOpen={isOpenned} onRequestClose={() => setOpenned(false)}>
         <ModalContainer>
           <ModalTitle>Resultado(s)</ModalTitle>
-          <ThemeProvider theme={theme}>
-            {isTB && (
-              <TextField
-                style={{ minWidth: 280 }}
-                disabled
-                id="filled-disabled"
-                label="TB"
-                defaultValue={resultTB}
-                variant="filled"
-              />
-            )}
-            {isTL && (
-              <TextField
-                style={{ minWidth: 280 }}
-                disabled
-                id="filled-disabled"
-                label="TL"
-                defaultValue={resultTL}
-                variant="filled"
-              />
-            )}
-            {isTI && (
-              <TextField
-                style={{ minWidth: 280 }}
-                disabled
-                id="filled-disabled"
-                label="TI"
-                defaultValue={resultTI}
-                variant="filled"
-              />
-            )}
-
-            <Separator />
-
+          {isTB && (
             <TextField
               style={{ minWidth: 280 }}
               disabled
               id="filled-disabled"
-              label="Média"
-              defaultValue={average}
+              label="TB"
+              defaultValue={resultTB}
               variant="filled"
             />
+          )}
+          {isTL && (
+            <TextField
+              style={{ minWidth: 280 }}
+              disabled
+              id="filled-disabled"
+              label="TL"
+              defaultValue={resultTL}
+              variant="filled"
+            />
+          )}
+          {isTI && (
+            <TextField
+              style={{ minWidth: 280 }}
+              disabled
+              id="filled-disabled"
+              label="TI"
+              defaultValue={resultTI}
+              variant="filled"
+            />
+          )}
 
-            <Button
-              style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
-              variant="contained"
-              color="primary"
-              onClick={() => setOpenned(false)}
-            >
-              Fechar
-            </Button>
-          </ThemeProvider>
+          <Separator />
+
+          <TextField
+            style={{ minWidth: 280 }}
+            disabled
+            id="filled-disabled"
+            label="Média"
+            defaultValue={average}
+            variant="filled"
+          />
+
+          <Button
+            style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
+            variant="contained"
+            color="primary"
+            onClick={() => setOpenned(false)}
+          >
+            Fechar
+          </Button>
         </ModalContainer>
       </Modal>
     </>
