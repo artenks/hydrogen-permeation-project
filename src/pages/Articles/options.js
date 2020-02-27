@@ -7,9 +7,7 @@ export default function(data, articles) {
         label(tooltipItem, _data) {
           const valor = data.datasets[0].data[tooltipItem.index];
           return `Difusividade ${
-            articles[tooltipItem.index].diffusivity.apparent
-              ? 'Aparente'
-              : 'Efetiva'
+            articles[tooltipItem.index].diffusivityType
           }: ${valor} 10-10m²s-1`; // dataInicial[tooltipItem.index].Tipo
         },
       },
@@ -28,7 +26,7 @@ export default function(data, articles) {
         {
           scaleLabel: {
             display: true,
-            labelString: 'Autor',
+            labelString: 'Título',
           },
         },
       ],

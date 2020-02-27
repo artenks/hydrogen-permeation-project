@@ -100,3 +100,45 @@ export const MethodsList = styled.div`
     }
   }
 `;
+
+export const ModalTitle = styled.div`
+  color: #333;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+`;
+
+export const ModalContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  & > div + div {
+    margin-top: 16px;
+  }
+`;
+
+export const ModalHorizontalContainer = styled.div`
+  display: flex;
+
+  & > div {
+    flex: 1;
+  }
+
+  div + div {
+    margin-left: 16px;
+  }
+`;
+
+export const ModalActions = styled.div`
+  display: flex;
+  justify-content: flex-end;
+
+  button + button {
+    margin-left: 16px;
+  }
+`;
+
+export const Separator = styled.div`
+  height: 1px;
+  background: #ddd;
+`;

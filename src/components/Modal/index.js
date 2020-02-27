@@ -13,6 +13,8 @@ const customStyles = {
     padding: 24,
     border: 'none',
     borderRadios: 4,
+    width: 'calc(100% - 48px)',
+    maxWidth: 900,
   },
 
   overlay: {
