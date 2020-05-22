@@ -17,7 +17,8 @@ export const Container = styled.div`
 export const Filters = styled.div`
   width: 100%;
   max-width: 600px;
-  padding: 50px 30px 0;
+
+  padding-top: 30px;
 `;
 
 export const Title = styled.strong`
