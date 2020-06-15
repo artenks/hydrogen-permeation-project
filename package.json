@@ -5,6 +5,8 @@
   "dependencies": {
     "@material-ui/core": "^4.9.2",
     "@rocketseat/unform": "^1.6.1",
+    "@unform/core": "^2.1.0",
+    "@unform/web": "^2.1.0",
     "chart.js": "^2.9.3",
     "eslint-import-resolver-babel-plugin-root-import": "^1.1.1",
     "firebase": "^7.8.2",

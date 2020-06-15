@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Form as BaseForm } from '@unform/web';
 
 import Scrollbar from 'react-perfect-scrollbar';
 
@@ -11,6 +12,15 @@ export const Container = styled(Scrollbar)`
 
   div + div {
     margin-bottom: 8px;
+  }
+`;
+
+export const Form = styled(BaseForm)`
+  display: flex;
+  flex-direction: column;
+
+  div + div {
+    margin-top: 16px;
   }
 `;
 

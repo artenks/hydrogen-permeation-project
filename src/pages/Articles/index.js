@@ -236,22 +236,20 @@ export default function Articles() {
 
   useEffect(() => {
     (async () => {
-      const query = firebase
+      const articlesResponse = await firebase
         .firestore()
         .collection('articles')
-        .orderBy('diffusivityValue');
+        .orderBy('diffusivityValue')
+        .get();
 
-      const articlesResponse = await query.get();
-
-      const rawData = [];
-
-      articlesResponse.docs.forEach(article => {
-        const articleData = { id: article.id, ...article.data() };
-
-        rawData.push(articleData);
-      });
-
-      setArticles(rawData);
+      if (!articlesResponse.empty) {
+        setArticles(
+          articlesResponse.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+          }))
+        );
+      }
     })();
   }, []);
 
@@ -366,7 +364,7 @@ export default function Articles() {
                 <InputLabel id="revestimento-label">Revestimento</InputLabel>
                 <Select
                   labelId="revestimento-label"
-                  id="revestimento  "
+                  id="revestimento"
                   value={selectedCoating}
                   onChange={handleCoatingChange}
                 >

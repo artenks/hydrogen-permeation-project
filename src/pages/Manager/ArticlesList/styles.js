@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Form as BaseForm } from '@unform/web';
 
 import Scrollbar from 'react-perfect-scrollbar';
 
@@ -14,7 +15,16 @@ export const Container = styled(Scrollbar)`
   }
 `;
 
-export const Steel = styled.div`
+export const Form = styled(BaseForm)`
+  display: flex;
+  flex-direction: column;
+
+  div + div {
+    margin-top: 16px;
+  }
+`;
+
+export const Article = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -41,5 +51,30 @@ export const Steel = styled.div`
 
   &:hover {
     background: #f0f0f0;
+  }
+`;
+
+export const ModalTitle = styled.div`
+  color: #333;
+  font-size: 20px;
+  font-weight: 500;
+`;
+
+export const ModalContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  div + div {
+    margin-top: 16px;
+  }
+`;
+
+export const ModalActionContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  button + button {
+    margin-left: 8px;
   }
 `;

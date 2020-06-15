@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import TextField from '@material-ui/core/TextField';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { MdEdit, MdDelete } from 'react-icons/md';
 import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -9,25 +8,29 @@ import {
   ModalTitle,
   ModalContainer,
   ModalActionContainer,
+  Form,
 } from './styles';
 import Modal from '../../../components/Modal';
+import TextField from '../../../components/TextField';
 import firebase from '../../../services/firebase';
 
 export default function SteelList() {
+  const addFormRef = useRef(null);
+  const editFormRef = useRef(null);
+
   const [steels, setSteels] = useState([]);
 
   const [addModalOpenned, setAddModalOpenned] = useState(false);
   const [isAdditingSteel, setAdditingSteel] = useState(false);
-  const [addedSteelName, setAddedSteelName] = useState('');
 
   const [deleteModalOpenned, setDeleteModalOpenned] = useState(false);
-  const [isDeletingSteel, setDeletingSteel] = useState(false);
-  const [deletingSteel, setDeletingSeel] = useState('');
+  const [isDeletingSteel, setIsDeletingSteel] = useState(false);
+  const [deletingSteel, setDeletingSteel] = useState('');
 
   const [editModalOpenned, setEditModalOpenned] = useState(false);
   const [isEditingSteel, setEditingSteel] = useState(false);
-  const [editingSteelName, setEditingSteelName] = useState('');
   const [editingSteelID, setEditingSteelID] = useState('');
+  const [editingSteelData, setEditingSteelData] = useState({});
 
   const handleLoadSteels = useCallback(() => {
     (async () => {
@@ -50,13 +53,13 @@ export default function SteelList() {
   }, []);
 
   const handleDelete = useCallback(({ id, name }) => {
-    setDeletingSeel({ id, name });
+    setDeletingSteel({ id, name });
     setDeleteModalOpenned(true);
   }, []);
 
-  const handleEdit = useCallback(({ id, name }) => {
-    setEditingSteelID(id);
-    setEditingSteelName(name);
+  const handleEdit = useCallback(data => {
+    setEditingSteelID(data.id);
+    setEditingSteelData(data);
     setEditModalOpenned(true);
   }, []);
 
@@ -72,72 +75,69 @@ export default function SteelList() {
     setEditModalOpenned(false);
   }, []);
 
-  const handleAddSteel = useCallback(() => {
-    (async () => {
-      setAdditingSteel(true);
+  const handleSubmitAddSteel = useCallback(() => {
+    addFormRef.current.submitForm();
+  }, [addFormRef]);
 
-      const addResponse = await firebase
-        .firestore()
-        .collection('steels')
-        .add({
-          name: addedSteelName,
-        });
+  const handleSubmitEditSteel = useCallback(() => {
+    editFormRef.current.submitForm();
+  }, [editFormRef]);
 
-      // eslint-disable-next-line no-console
-      console.log(addResponse);
+  const handleAddSteel = useCallback(
+    data => {
+      (async () => {
+        setAdditingSteel(true);
 
-      setAdditingSteel(false);
-      setAddedSteelName('');
+        await firebase
+          .firestore()
+          .collection('steels')
+          .add(data);
 
-      handleCloseAddModal();
-      handleLoadSteels();
-    })();
-  }, [addedSteelName, handleCloseAddModal, handleLoadSteels]);
+        setAdditingSteel(false);
+
+        handleCloseAddModal();
+        handleLoadSteels();
+      })();
+    },
+    [handleCloseAddModal, handleLoadSteels]
+  );
+
+  const handleEditSteel = useCallback(
+    data => {
+      (async () => {
+        setEditingSteel(true);
+
+        await firebase
+          .firestore()
+          .doc(`steels/${editingSteelID}`)
+          .set(data);
+
+        setEditingSteel(false);
+        setEditingSteelID('');
+
+        handleCloseEditModal();
+        handleLoadSteels();
+      })();
+    },
+    [editingSteelID, handleCloseEditModal, handleLoadSteels]
+  );
 
   const handleDeleteSteel = useCallback(() => {
     (async () => {
-      setDeletingSteel(true);
+      setIsDeletingSteel(true);
 
       await firebase
         .firestore()
         .doc(`steels/${deletingSteel.id}`)
         .delete();
 
-      setDeletingSteel(false);
-      setDeletingSeel('');
+      setIsDeletingSteel(false);
+      setDeletingSteel('');
 
       handleCloseDeleteModal();
       handleLoadSteels();
     })();
   }, [deletingSteel.id, handleCloseDeleteModal, handleLoadSteels]);
-
-  const handleEditSteel = useCallback(() => {
-    (async () => {
-      setEditingSteel(true);
-
-      const editResponse = await firebase
-        .firestore()
-        .doc(`steels/${editingSteelID}`)
-        .set({
-          name: editingSteelName,
-        });
-
-      // eslint-disable-next-line no-console
-      console.log(editResponse);
-
-      setEditingSteel(false);
-      setEditingSteelID('');
-      setEditingSteelName('');
-
-      handleCloseEditModal();
-      handleLoadSteels();
-    })();
-  }, [
-    editingSteelID,
-    editingSteelName,
-    handleCloseEditModal,
-    handleLoadSteels,
-  ]);
 
   useEffect(() => {
     handleLoadSteels();
@@ -172,12 +172,9 @@ export default function SteelList() {
 
       <Modal isOpen={addModalOpenned} onRequestClose={handleCloseAddModal}>
         <ModalContainer>
-          <TextField
-            value={addedSteelName}
-            onChange={e => setAddedSteelName(e.target.value)}
-            label="Nome do aço"
-            variant="filled"
-          />
+          <Form onSubmit={handleAddSteel} ref={addFormRef}>
+            <TextField label="Nome do aço" name="name" />
+          </Form>
 
           <ModalActionContainer>
             <Button
@@ -193,13 +190,50 @@ export default function SteelList() {
               style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
               variant="contained"
               color="secondary"
-              onClick={handleAddSteel}
+              onClick={handleSubmitAddSteel}
               disabled={isAdditingSteel}
             >
               {isAdditingSteel ? (
                 <CircularProgress size={25} color="primary" />
               ) : (
                 'Cadastrar'
+              )}
+            </Button>
+          </ModalActionContainer>
+        </ModalContainer>
+      </Modal>
+
+      <Modal isOpen={editModalOpenned} onRequestClose={handleCloseEditModal}>
+        <ModalContainer>
+          <Form
+            ref={editFormRef}
+            onSubmit={handleEditSteel}
+            initialData={editingSteelData}
+          >
+            <TextField label="Nome do aço" name="name" />
+          </Form>
+
+          <ModalActionContainer>
+            <Button
+              style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
+              variant="contained"
+              color="primary"
+              onClick={handleCloseEditModal}
+              disabled={isEditingSteel}
+            >
+              Fechar
+            </Button>
+            <Button
+              style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
+              variant="contained"
+              color="secondary"
+              onClick={handleSubmitEditSteel}
+              disabled={isEditingSteel}
+            >
+              {isEditingSteel ? (
+                <CircularProgress size={25} color="primary" />
+              ) : (
+                'Atualizar'
               )}
             </Button>
           </ModalActionContainer>
@@ -234,42 +268,6 @@ export default function SteelList() {
                 <CircularProgress size={25} color="primary" />
               ) : (
                 'Remover'
-              )}
-            </Button>
-          </ModalActionContainer>
-        </ModalContainer>
-      </Modal>
-
-      <Modal isOpen={editModalOpenned} onRequestClose={handleCloseEditModal}>
-        <ModalContainer>
-          <TextField
-            value={editingSteelName}
-            onChange={e => setEditingSteelName(e.target.value)}
-            label="Nome do aço"
-            variant="filled"
-          />
-
-          <ModalActionContainer>
-            <Button
-              style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
-              variant="contained"
-              color="primary"
-              onClick={handleCloseEditModal}
-              disabled={isEditingSteel}
-            >
-              Fechar
-            </Button>
-            <Button
-              style={{ color: 'white', marginTop: 16, alignSelf: 'flex-end' }}
-              variant="contained"
-              color="secondary"
-              onClick={handleEditSteel}
-              disabled={isEditingSteel}
-            >
-              {isEditingSteel ? (
-                <CircularProgress size={25} color="primary" />
-              ) : (
-                'Atualizar'
               )}
             </Button>
           </ModalActionContainer>
